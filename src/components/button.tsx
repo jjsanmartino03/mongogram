@@ -11,21 +11,6 @@ type ButtonProps = {
 export default function Button({ children, className, ...props }: ButtonProps) {
   const { variant = 'solid', theme = 'primary', onClick } = props
 
-  let bgColor = ''
-  let color = ''
-  if (theme === 'primary') {
-    bgColor = 'blue'
-    color = 'white'
-  } else if (theme === 'secondary') {
-    bgColor = 'gray'
-    color = 'white'
-  } else if (theme === 'danger') {
-    bgColor = 'red'
-    color = 'white'
-  }
-
-  console.log(bgColor)
-
   const classes = clsx(
     'font-bold py-2 px-4 rounded',
     {
