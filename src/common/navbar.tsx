@@ -2,9 +2,9 @@
 import { Fragment, useState } from 'react'
 import { signIn, signOut, useSession } from 'next-auth/react'
 import { FaBars, FaDoorOpen, FaSignOutAlt } from 'react-icons/fa'
-import Button from '@components/button'
+import Button from './button'
 import { pages } from '@utils/pages'
-import CustomLink from '@components/link'
+import CustomLink from './link'
 import Image from 'next/image'
 
 export default function Navbar() {

@@ -3,7 +3,8 @@ import { Ubuntu } from 'next/font/google'
 import { Metadata } from 'next'
 import Providers from '../context'
 import { getServerSession } from 'next-auth'
-import Navbar from '@components/navbar'
+import Navbar from '@common/navbar'
+import { authConfig } from './api/auth/[...nextauth]/route'
 
 const ubuntu = Ubuntu({ subsets: ['latin'], display: 'swap', weight: ['300', '400', '500', '700'] })
 
@@ -14,7 +15,7 @@ export const metadata: Metadata = {
 }
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
-  const session = await getServerSession()
+  const session = await getServerSession(authConfig)
 
   return (
     <html lang='en'>

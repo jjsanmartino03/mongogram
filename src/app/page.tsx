@@ -1,8 +1,8 @@
 'use client'
-import Button from '@components/button'
-import { signIn, signOut, useSession } from 'next-auth/react'
+import Button from '@common/button'
+import { signIn, useSession } from 'next-auth/react'
 import Image from 'next/image'
-import Navbar from '@components/navbar'
+import { pages } from '@utils/pages'
 
 export default function Home() {
   const session = useSession()
@@ -22,24 +22,23 @@ export default function Home() {
           Mongogram es una aplicación hecha con fines educativos, y funciona como una mini red social básica. Se pueden
           crear posts y ver los posts de los demás usuarios. Para acceder deberás vincular tu cuenta de Google. 👇
         </div>
-        <Button
-          variant={'link'}
-          onClick={() =>
-            signIn('google', {
-              callbackUrl: 'http://localhost:3000/feed'
-            })
-          }
-        >
-          Ingresar con Google
-        </Button>
-        {session.data && (
-          <>
-            <img className={'rounded-full'} src={session?.data?.user?.image || ''} />
-            <div>{session?.data?.user?.name}</div>
-            <Button theme={'danger'} onClick={() => signOut()}>
-              Salir
-            </Button>
-          </>
+        {session.status === 'authenticated' ? (
+          <Button theme={'primary'} variant={'link'} href={pages.feed}>
+            Ir a mi feed
+          </Button>
+        ) : (
+          <Button
+            variant={'outline'}
+            onClick={() =>
+              signIn('google', {
+                callbackUrl: 'http://localhost:3000/feed'
+              })
+            }
+            className={'flex gap-2 items-center'}
+          >
+            <Image src={'google.svg'} alt={'Google logo'} width={30} height={30} />
+            Ingresar con Google
+          </Button>
         )}
       </div>
     </div>

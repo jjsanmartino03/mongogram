@@ -62,7 +62,8 @@
       }
     ],
     "no-constant-condition": "warn",
-    "@typescript-eslint/no-empty-function": "off"
+    "@typescript-eslint/no-empty-function": "off",
+    "max-len": ["warn", { "code": 120 }]
   },
   "ignorePatterns": [
     "dist",

@@ -21,7 +21,9 @@
     ],
     "paths": {
       "@utils/*": ["./src/utils/*"],
-      "@components/*": ["./src/components/*"]
+      "@common/*": ["./src/common/*"],
+      "@interfaces/*": ["./src/interfaces/*"],
+      "@mutations/*": ["./src/mutations/*"],
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
