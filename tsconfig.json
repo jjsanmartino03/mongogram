@@ -23,7 +23,7 @@
       "@utils/*": ["./src/utils/*"],
       "@common/*": ["./src/common/*"],
       "@interfaces/*": ["./src/interfaces/*"],
-      "@mutations/*": ["./src/mutations/*"],
+      "@queries/*": ["./src/queries/*"],
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],

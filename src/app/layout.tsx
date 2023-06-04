@@ -17,6 +17,8 @@ export const metadata: Metadata = {
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const session = await getServerSession(authConfig)
 
+  // todo: check if user is logged in and redirect based on the url
+
   return (
     <html lang='en'>
       <body className={ubuntu.className}>

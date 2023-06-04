@@ -2,7 +2,7 @@ import { z } from 'zod'
 import { connectToDatabase } from '@utils/db'
 import { Post, PostWithUser } from '@interfaces/post'
 import { NextResponse } from 'next/server'
-import { withValidation } from '@utils/validation'
+import { withAuthRoute, withValidation } from '@utils/middlewares'
 import { getCustomSession } from '@utils/session'
 import { ObjectId, WithId } from 'mongodb'
 
@@ -31,23 +31,27 @@ export const getPosts = async () => {
   return posts.toArray()
 }
 
-export const POST = withValidation(async (req: Request, data) => {
-  const session = await getCustomSession()
+const POST = withAuthRoute(
+  withValidation(async (req: Request, data) => {
+    const session = await getCustomSession()
 
-  if (!session) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-  }
+    if (!session) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    }
 
-  const { content } = data
+    const { content } = data
 
-  const db = await connectToDatabase()
+    const db = await connectToDatabase()
 
-  await db.collection<Post>('posts').insertOne({
-    content,
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
-    userId: new ObjectId(session.user.id)
-  })
+    await db.collection<Post>('posts').insertOne({
+      content,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+      userId: new ObjectId(session.user.id)
+    })
 
-  return NextResponse.json({ success: true })
-}, newPostSchema)
+    return NextResponse.json({ success: true })
+  }, newPostSchema)
+)
+
+export { POST }

@@ -1,8 +1,9 @@
 'use client'
 import Button from '@common/button'
 import { useState } from 'react'
-import { useCreatePostMutation } from '@mutations/posts'
+import { useCreatePostMutation } from '@queries/posts'
 import { useRouter } from 'next/navigation'
+import Card from '@common/card'
 
 export default function CreatePostCard({}) {
   const router = useRouter()
@@ -14,11 +15,11 @@ export default function CreatePostCard({}) {
   })
 
   return (
-    <>
+    <Card>
       <input onChange={e => setContent(e.target.value)} type={'textarea'} />
       <Button isLoading={isLoading} theme={'primary'} onClick={() => mutate(content)}>
         Publicar
       </Button>
-    </>
+    </Card>
   )
 }

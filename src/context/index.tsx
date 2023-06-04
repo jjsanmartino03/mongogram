@@ -1,7 +1,7 @@
 'use client'
 import { SessionProvider } from 'next-auth/react'
 import { Session } from 'next-auth'
-import { QueryClient, QueryClientProvider } from "react-query"
+import { QueryClient, QueryClientProvider } from 'react-query'
 
 const queryClient = new QueryClient()
 
