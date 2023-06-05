@@ -5,7 +5,8 @@ export interface Post {
   content: string
   createdAt: string
   updatedAt: string
-  userId: ObjectId
+  userId: any
+  _id?: string
 }
 
 export interface PostWithUser extends Post {

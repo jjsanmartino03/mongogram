@@ -1,11 +1,10 @@
 'use client'
 import { Fragment, useState } from 'react'
 import { signIn, signOut, useSession } from 'next-auth/react'
-import { FaBars, FaDoorOpen, FaSignOutAlt } from 'react-icons/fa'
+import { FaBars, FaSignOutAlt } from 'react-icons/fa'
 import Button from './button'
 import { pages } from '@utils/pages'
 import CustomLink from './link'
-import Image from 'next/image'
 
 export default function Navbar() {
   const session = useSession()
@@ -37,8 +36,11 @@ export default function Navbar() {
               width={35}
               className={'rounded-full'}
               height={35}
-              src={session.data?.user?.image ?? ''}
-              alt={'Foto de perfil del usuario'}
+              src={session?.data?.user?.image || ''}
+              alt={'Usuario'}
+              onError={e => {
+                e.currentTarget.src = `https://source.boringavatars.com/beam/120/${session?.data?.user?.name}?colors=264653,2a9d8f,e9c46a,f4a261,e76f51`
+              }}
             />{' '}
             {session.data?.user?.name}
           </div>

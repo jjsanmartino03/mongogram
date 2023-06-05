@@ -5,6 +5,8 @@ import Providers from '../context'
 import { getServerSession } from 'next-auth'
 import Navbar from '@common/navbar'
 import { authConfig } from './api/auth/[...nextauth]/route'
+import { redirect } from 'next/navigation'
+import { pages } from '@utils/pages'
 
 const ubuntu = Ubuntu({ subsets: ['latin'], display: 'swap', weight: ['300', '400', '500', '700'] })
 
@@ -16,8 +18,6 @@ export const metadata: Metadata = {
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const session = await getServerSession(authConfig)
-
-  // todo: check if user is logged in and redirect based on the url
 
   return (
     <html lang='en'>

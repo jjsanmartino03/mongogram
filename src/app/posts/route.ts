@@ -10,25 +10,43 @@ const newPostSchema = z.object({
   content: z.string()
 })
 
-export const getPosts = async () => {
+export const getPosts = async (page: number) => {
   const db = await connectToDatabase()
 
-  const posts = await db.collection<Post>('posts').aggregate<WithId<PostWithUser>>([
-    {
-      $lookup: {
-        from: 'users',
-        localField: 'userId',
-        foreignField: '_id',
-        as: 'user'
-      }
-    },
-    {
-      $unwind: '$user'
-    },
-    { $sort: { createdAt: -1 } }
-  ])
+  let posts = await db
+    .collection<Post>('posts')
+    .aggregate<WithId<PostWithUser>>([
+      {
+        $lookup: {
+          from: 'users',
+          localField: 'userId',
+          foreignField: '_id',
+          as: 'user'
+        }
+      },
+      {
+        $unwind: '$user'
+      },
+      { $sort: { createdAt: -1 } },
+      { $skip: (page - 1) * 10 },
+      { $limit: 10 }
+    ])
+    .toArray()
 
-  return posts.toArray()
+  posts = posts.map(p => ({
+    ...p,
+    _id: p._id.toString(),
+    user: {
+      ...p.user,
+      _id: p.user._id.toString()
+    },
+    userId: p.userId.toString()
+  }))
+
+  return {
+    items: posts,
+    page
+  }
 }
 
 const POST = withAuthRoute(
@@ -54,4 +72,13 @@ const POST = withAuthRoute(
   }, newPostSchema)
 )
 
-export { POST }
+const GET = withAuthRoute(async (req: Request) => {
+  const { searchParams } = new URL(req.url)
+  const page = searchParams.get('page')
+
+  const posts = await getPosts(parseInt(page || '1'))
+
+  return NextResponse.json(posts)
+})
+
+export { POST, GET }
