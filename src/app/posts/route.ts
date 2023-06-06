@@ -13,7 +13,7 @@ const newPostSchema = z.object({
 export const getPosts = async (page: number) => {
   const db = await connectToDatabase()
 
-  let posts = await db
+  const posts = await db
     .collection<Post>('posts')
     .aggregate<WithId<PostWithUser>>([
       {
@@ -33,7 +33,7 @@ export const getPosts = async (page: number) => {
     ])
     .toArray()
 
-  posts = posts.map(p => ({
+  const items = posts.map(p => ({
     ...p,
     _id: p._id.toString(),
     user: {
@@ -44,7 +44,7 @@ export const getPosts = async (page: number) => {
   }))
 
   return {
-    items: posts,
+    items,
     page
   }
 }

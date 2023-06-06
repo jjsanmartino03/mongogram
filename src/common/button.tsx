@@ -44,7 +44,7 @@ export default function Button({ children, className, href, ...props }: ButtonPr
           <svg
             aria-hidden='true'
             role='status'
-            className='inline mr-3 w-4 h-4 text-white animate-spin'
+            className='inline mr-3 w-4 h-4 animate-spin'
             viewBox='0 0 100 101'
             fill='none'
             xmlns='http://www.w3.org/2000/svg'
@@ -58,7 +58,7 @@ export default function Button({ children, className, href, ...props }: ButtonPr
               fill='currentColor'
             ></path>
           </svg>
-          Cargando
+          {children}
         </span>
       ) : (
         children

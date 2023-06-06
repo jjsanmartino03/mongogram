@@ -6,9 +6,13 @@ export interface Post {
   createdAt: string
   updatedAt: string
   userId: any
-  _id?: string
+  likes?: string[]
 }
 
-export interface PostWithUser extends Post {
+export interface PostWithStringId extends Post {
+  _id: string
+}
+
+export interface PostWithUser extends PostWithStringId {
   user: User
 }

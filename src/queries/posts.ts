@@ -3,6 +3,7 @@ import api from '@utils/api'
 import { WithId } from 'mongodb'
 import { PostWithUser } from '@interfaces/post'
 import { PaginatedData } from '@interfaces/index'
+import { opt } from 'ts-interface-checker'
 
 export function useCreatePostMutation<T>(options?: UseMutationOptions<unknown, unknown, T>) {
   return useMutation<unknown, unknown, T>(
@@ -14,8 +15,8 @@ export function useCreatePostMutation<T>(options?: UseMutationOptions<unknown, u
   )
 }
 
-export function useInfitePosts(initialData?: PaginatedData<WithId<PostWithUser>>) {
-  return useInfiniteQuery<PaginatedData<WithId<PostWithUser>>>(
+export function useInfitePosts<T>(initialData?: PaginatedData<T>) {
+  return useInfiniteQuery<PaginatedData<T>>(
     ['/posts'],
     async ({ pageParam = 1 }) => {
       return api.get('/posts', { page: pageParam.toString() })
@@ -24,5 +25,15 @@ export function useInfitePosts(initialData?: PaginatedData<WithId<PostWithUser>>
       ...(initialData && { initialData: { pages: [initialData], pageParams: [initialData.page] } }),
       getNextPageParam: lastPage => (lastPage.items.length === 10 ? lastPage.page + 1 : null)
     }
+  )
+}
+
+export const useLikeMutation = <T>(options?: UseMutationOptions<T, unknown, string, { previousPosts: T }>) => {
+  return useMutation<T, unknown, string, { previousPosts: T }>(
+    'like',
+    async (postId: string) => {
+      return api.post(`/posts/${postId}/like`, {})
+    },
+    options
   )
 }
