@@ -5,14 +5,14 @@ import { pages } from '@utils/pages'
 import { getServerSession } from 'next-auth'
 import { authConfig } from '../api/auth/[...nextauth]/route'
 import UsersCard from './users-card'
-import { getUsers } from '../users/route'
+import { getUsers } from '../users/services'
 
 export default async function Feed({}) {
   const sessionPromise = getServerSession(authConfig)
   const postsPromise = getPosts(1)
   const usersPromise = getUsers()
 
-  const [session, posts,users] = await Promise.all([sessionPromise, postsPromise, usersPromise])
+  const [session, posts, users] = await Promise.all([sessionPromise, postsPromise, usersPromise])
 
   if (!session) redirect(pages.home)
 
