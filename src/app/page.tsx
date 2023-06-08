@@ -31,7 +31,7 @@ export default function Home() {
             variant={'outline'}
             onClick={() =>
               signIn('google', {
-                callbackUrl: 'http://localhost:3000/feed'
+                callbackUrl: pages.feed
               })
             }
             className={'flex gap-2 items-center'}

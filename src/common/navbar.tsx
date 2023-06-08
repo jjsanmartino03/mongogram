@@ -55,7 +55,7 @@ export default function Navbar() {
             key={1}
             onClick={() =>
               signIn('google', {
-                callbackUrl: 'http://localhost:3000/feed'
+                callbackUrl: pages.feed
               })
             }
           >

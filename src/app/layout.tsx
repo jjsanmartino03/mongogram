@@ -4,9 +4,9 @@ import { Metadata } from 'next'
 import Providers from '../context'
 import { getServerSession } from 'next-auth'
 import Navbar from '@common/navbar'
-import { authConfig } from './api/auth/[...nextauth]/route'
 import { redirect } from 'next/navigation'
 import { pages } from '@utils/pages'
+import { authConfig } from '@utils/config'
 
 const ubuntu = Ubuntu({ subsets: ['latin'], display: 'swap', weight: ['300', '400', '500', '700'] })
 

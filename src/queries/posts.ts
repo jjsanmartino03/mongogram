@@ -37,3 +37,15 @@ export const useLikeMutation = <T>(options?: UseMutationOptions<T, unknown, stri
     options
   )
 }
+
+export const useCommentMutation = <T>(
+  options?: UseMutationOptions<T, unknown, { postId: string; content: string }>
+) => {
+  return useMutation<T, unknown, { postId: string; content: string }>(
+    'comment',
+    async ({ postId, content }) => {
+      return api.post(`/posts/${postId}/comments`, { content })
+    },
+    options
+  )
+}

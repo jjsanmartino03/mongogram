@@ -10,13 +10,15 @@ type ButtonProps = {
   className?: string
   href?: string
   isLoading?: boolean
+  padding?: boolean
   disabled?: boolean
+  type?: 'button' | 'submit' | 'reset'
 }
 export default function Button({ children, className, href, ...props }: ButtonProps) {
   const { variant = 'solid', theme = 'primary', onClick } = props
 
   const classes = clsx(
-    'font-bold py-2 px-4 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed',
+    'font-bold rounded-lg disabled:opacity-50 disabled:cursor-not-allowed',
     {
       'bg-blue-500 hover:bg-blue-700 text-white': variant === 'solid' && theme === 'primary',
       'bg-gray-500 hover:bg-gray-700 text-white': variant === 'solid' && theme === 'secondary',
@@ -28,7 +30,8 @@ export default function Button({ children, className, href, ...props }: ButtonPr
       'bg-transparent hover:underline': variant === 'link',
       'text-red-500': variant === 'link' && theme === 'danger',
       'text-black': variant === 'link' && theme === 'secondary',
-      'text-blue-500': variant === 'link' && theme === 'primary'
+      'text-blue-500': variant === 'link' && theme === 'primary',
+      'py-2 px-4': props.padding !== false
     },
     className
   )
@@ -38,7 +41,7 @@ export default function Button({ children, className, href, ...props }: ButtonPr
       {children}
     </Link>
   ) : (
-    <button disabled={props.isLoading || props.disabled} className={classes} onClick={onClick}>
+    <button type={props.type} disabled={props.isLoading || props.disabled} className={classes} onClick={onClick}>
       {props.isLoading ? (
         <span className={'flex gap-0 justify-center items-center w-full'}>
           <svg

@@ -17,6 +17,17 @@ export const getPosts = async (page: number) => {
     .collection<Post>('posts')
     .aggregate<WithId<PostWithUser>>([
       {
+        $sort: {
+          createdAt: -1
+        }
+      },
+      {
+        $skip: 0
+      },
+      {
+        $limit: 10
+      },
+      {
         $lookup: {
           from: 'users',
           localField: 'userId',
@@ -25,11 +36,70 @@ export const getPosts = async (page: number) => {
         }
       },
       {
-        $unwind: '$user'
+        $unwind: {
+          path: '$user',
+          preserveNullAndEmptyArrays: true
+        }
       },
-      { $sort: { createdAt: -1 } },
-      { $skip: (page - 1) * 10 },
-      { $limit: 10 }
+      {
+        $unwind: {
+          path: '$comments',
+          preserveNullAndEmptyArrays: true
+        }
+      },
+      {
+        $lookup: {
+          from: 'users',
+          localField: 'comments.userId',
+          foreignField: '_id',
+          as: 'comments.user'
+        }
+      },
+      {
+        $unwind: {
+          path: '$comments.user',
+          preserveNullAndEmptyArrays: true
+        }
+      },
+      {
+        $group: {
+          _id: '$_id',
+          content: {
+            $first: '$content'
+          },
+          createdAt: {
+            $first: '$createdAt'
+          },
+          updatedAt: {
+            $first: '$updatedAt'
+          },
+          userId: {
+            $first: '$userId'
+          },
+          likes: {
+            $first: '$likes'
+          },
+          user: {
+            $first: '$user'
+          },
+          comments: {
+            $push: '$comments'
+          }
+        }
+      },
+      {
+        $set: {
+          comments: {
+            $cond: {
+              if: {
+                $eq: ['$comments', [{}]]
+              },
+              then: null,
+              else: '$comments'
+            }
+          }
+        }
+      }
     ])
     .toArray()
 
@@ -40,7 +110,16 @@ export const getPosts = async (page: number) => {
       ...p.user,
       _id: p.user._id.toString()
     },
-    userId: p.userId.toString()
+    userId: p.userId.toString(),
+    comments: p.comments
+      ? p.comments.map(c => ({
+          ...c,
+          _id: c._id.toString(),
+          userId: c.userId.toString(),
+          content: c.content,
+          createdAt: c.createdAt
+        }))
+      : undefined
   }))
 
   return {
