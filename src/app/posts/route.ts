@@ -99,6 +99,11 @@ export const getPosts = async (page: number) => {
             }
           }
         }
+      },
+      {
+        $sort: {
+          createdAt: -1
+        }
       }
     ])
     .toArray()
@@ -117,7 +122,11 @@ export const getPosts = async (page: number) => {
           _id: c._id.toString(),
           userId: c.userId.toString(),
           content: c.content,
-          createdAt: c.createdAt
+          createdAt: c.createdAt,
+          user: {
+            ...c.user,
+            _id: c.user?._id.toString()
+          }
         }))
       : undefined
   }))

@@ -18,9 +18,6 @@ export default function Navbar() {
           <CustomLink key={0} href={pages.feed}>
             Feed
           </CustomLink>,
-          <CustomLink key={1} href={'/posts'}>
-            Usuarios
-          </CustomLink>,
 
           <Button
             key={2}
@@ -46,9 +43,6 @@ export default function Navbar() {
           </div>
         ]
       : [
-          <CustomLink href={pages.home} key={0}>
-            Home
-          </CustomLink>,
           <Button
             className={'px-0'}
             variant={'link'}
