@@ -125,7 +125,9 @@ export const getPosts = async (page: number) => {
           createdAt: c.createdAt,
           user: {
             ...c.user,
-            _id: c.user?._id.toString()
+            _id: c.user?._id.toString() || '',
+            email: c.user?.email || '',
+            name: c.user?.name || ''
           }
         }))
       : undefined
